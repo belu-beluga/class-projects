@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="data:,">
+</head>
+
+<body class="font-['Plus_Jakarta_Sans']"></body>
+    <div class="[perspective:1000px] [transform-style:preserve-3d] flex flex-col items-center justify-center h-screen bg-neutral-900"
+        style="
+        background-image: radial-gradient(circle at 0.5px 0.5px, rgba(6, 182,212, 0.2) 0.5px, transparent 0);
+        background-size: 8px 8px;
+        background-position: repeat;
+      ">
+        <button
+            class="text-neutral-500 group relative py-4 px-12 rounded-xl text-xl bg-black shadow-[0_1px_2px_0_rgba(255,255,255,0.1)_inset,0px_-1px_2px_0px_rgba(255,255,255,0.1)_inset] hover:shadow-[0_20px_50px_rgba(6,182,212,0.2)] hover:-translate-y-1.5 hover:[transform:rotateX(10deg)_rotateY(5deg)_translateZ(50px)] active:scale-95 transition-all duration-200 ease-in-out"
+            style="transform-style: preserve-3d;">
+            <span
+                class="text-white">
+                Subscribe
+            </span>
+            <span
+                class="absolute bottom-0 inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent h-px w-3/4 mx-auto"></span>
+            <span
+                class="absolute opacity-0 group-hover:opacity-100 bottom-0 inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent h-[3px] blur-sm w-full mx-auto transition-opacity duration-300"></span>
+        </button>
+
+        <div class="mt-8 relative">
+            <input 
+                type="text" 
+                id="searchInput"
+                placeholder="Search with debouncing..."
+                class="w-80 px-4 py-3 bg-black text-white border border-neutral-700 rounded-xl focus:outline-none focus:border-cyan-500 transition-all duration-200"
+            />
+            <div 
+                id="searchResults" 
+                class="absolute top-full left-0 right-0 mt-2 bg-black border border-neutral-700 rounded-xl max-h-60 overflow-y-auto hidden"
+            >
+                <div class="p-4 text-neutral-400 text-sm">Start typing to search...</div>
+            </div>
+        </div>
+
+        <script>
+        let debounceTimer;
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const mockData = [
+            'JavaScript', 'Python', 'React', 'Vue.js', 'Angular', 'Node.js',
+            'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap', 'jQuery'
+        ];
+
+        function debounce(func, delay) {
+            return function(...args) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        const handleSearch = debounce((query) => {
+            if (query.length === 0) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            const filtered = mockData.filter(item => 
+                item.toLowerCase().includes(query.toLowerCase())
+            );
+
+            searchResults.innerHTML = filtered.length > 0 
+                ? filtered.map(item => `<div class="p-3 hover:bg-neutral-800 cursor-pointer text-white">${item}</div>`).join('')
+                : '<div class="p-4 text-neutral-400 text-sm">No results found</div>';
+            
+            searchResults.classList.remove('hidden');
+        }, 1000); // here 1000ms is the debounce delay and if we do it 0ms then it will not debounce means it will search immediately on every input
+
+        searchInput.addEventListener('input', (e) => {
+            handleSearch(e.target.value);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+        </script>
+        <!-- <button class="my-element">Hlo</button> -->
+    </div>
+    <script src="script.js" defer></script>
+</body>
+
+</html>

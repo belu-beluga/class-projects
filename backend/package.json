@@ -1,0 +1,15 @@
+{
+  "name": "aadhaar-qr-extractor",
+  "version": "1.0.0",
+  "description": "Extract QR code from Aadhaar PDF",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "pdf-poppler": "^2.1.4",
+    "pdf2pic": "^2.1.4",
+    "sharp": "^0.32.6",
+    "jsqr": "^1.4.0"
+  }
+}
